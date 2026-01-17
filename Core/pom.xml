@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>CombatPets</artifactId>
+        <groupId>su.nightexpress.combatpets</groupId>
+        <version>3.0.0-fork</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>Core</artifactId>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>Central Sonatype</id>
+            <url>https://central.sonatype.com/</url>
+        </repository>
+
+        <repository>
+            <id>lumine-repo</id>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>lumine-snapshot</id>
+            <url>https://mvn.lumine.io/repository/maven-snapshots/</url>
+        </repository>
+
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>API</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>NMS</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>MC_1_21_11</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>MC_1_21_10</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>MC_1_21_8</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>MC_1_21_5</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.combatpets</groupId>
+            <artifactId>MC_1_21_4</artifactId>
+            <version>3.0.0-fork</version>
+        </dependency>
+
+        <!-- bStats Metrics -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.magmaguy.freeminecraftmodels</groupId>
+            <artifactId>FreeMinecraftModels</artifactId>
+            <version>1.1.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/FreeMinecraftModels.jar</systemPath>
+        </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/io.lumine/Mythic-Dist -->
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.9.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- broken repo, i dont care, will use local jar -->
+        <dependency>
+            <groupId>io.github.arcaneplugins</groupId>
+            <artifactId>LevelledMobs-plugin</artifactId>
+            <version>4.5.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/LevelledMobs-4.5.0 b141.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory> <!-- (your resources folder location) -->
+                <filtering>true
+                </filtering> <!-- this is the important part, it's what replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.parent.basedir}\target\CombatPets-${project.version}.jar</outputFile>
+                            <artifactSet>
+                                <includes>
+                                    <include>su.nightexpress.combatpets:*</include>
+                                    <include>org.bstats:*</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>su.nightexpress.combatpets.libs.bstats</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
